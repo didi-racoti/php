@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+    <title>Vizualizare Inregistrari</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+    <h1>Inregistrarile din tabela evenimente</h1>
+    <p><b>Toate inregistrarile din evenimente</b></p>
+    <?php
+    include("Conectare.php");
+    if ($result = $conn->query("SELECT * FROM eveniment ORDER BY id ")) {
+        if ($result->num_rows > 0) {
+            echo "<table border='1' cellpadding='10'>";
+            echo "<tr><th>ID</th><th>Titlu</th><th>Descriere</th><th>Locatie</th><th>Data</th><th>Contact</th><th></th><th></th></tr>";
+            while ($row = $result->fetch_object()) {
+                echo "<tr>";
+                echo "<td>" . $row->id . "</td>";
+                echo "<td>" . $row->titlu . "</td>";
+                echo "<td>" . $row->descriere . "</td>";
+                echo "<td>" . $row->locatie . "</td>";
+                echo "<td>" . $row->data . "</td>";
+                echo "<td>" . $row->contact . "</td>";
+                echo "<td><a href='ModificareEvent.php?id=" . $row->id . "'>Modificare</a></td>";
+                echo "<td><a href='StergereEvent.php?id=" . $row->id . "'>Stergere</a></td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "Nu sunt inregistrari in tabela!";
+        }
+        $result->close(); // Close the result set.
+    } else {
+        echo "Error: " . $conn->error;
+    }
+    $conn->close(); // Close the database connection.
+    ?>
+    <a href="InserareEvent.php">Adaugarea unei noi inregistrari</a>
+</body>
+
+</html>
